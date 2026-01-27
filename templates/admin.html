@@ -1,34 +1,7 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin</title>
-  <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
-<div class="container small">
-  <h2>🔐 Admin Panel</h2>
-
-  {% if error %}
-    <p class="error">{{ error }}</p>
-  {% endif %}
-
-  {% if not logged_in %}
-    <form method="post">
-      <input type="password" name="password" placeholder="รหัสผ่าน">
-      <button>เข้าสู่ระบบ</button>
-    </form>
-  {% else %}
-    <form method="post">
-      <input type="text" name="video_url" placeholder="วางลิงก์ Google Drive">
-      <button>บันทึกคลิป</button>
-    </form>
-
-    <a href="/logout" class="logout">ออกจากระบบ</a>
-  {% endif %}
-</div>
-
-</body>
-</html>
+<form method="post" class="card">
+<h3>หลังบ้าน</h3>
+<input name="drive" placeholder="วางลิงก์ Google Drive">
+<button>อัปเดตวิดีโอ</button>
+{% if video %}<p>ตั้งค่าสำเร็จ</p>{% endif %}
+<a href="/logout">ออกจากระบบ</a>
+</form>
