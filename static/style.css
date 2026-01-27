@@ -4,13 +4,13 @@
 }
 
 body {
-  background: linear-gradient(135deg, #141e30, #243b55);
-  min-height: 100vh;
   margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #fff;
 }
 
 .container {
@@ -21,7 +21,7 @@ body {
 }
 
 .small {
-  max-width: 400px;
+  max-width: 420px;
 }
 
 h1, h2 {
@@ -33,7 +33,8 @@ h1, h2 {
   padding-top: 56.25%;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  background: #000;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
 }
 
 .video-box iframe {
@@ -44,12 +45,23 @@ h1, h2 {
   border: none;
 }
 
+/* บังปุ่มเปิดหน้าต่างใหม่ + เมนู Google Drive */
+.block-google-ui {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90px;
+  height: 70px;
+  z-index: 10;
+}
+
 input {
   width: 100%;
   padding: 12px;
+  margin-bottom: 12px;
   border-radius: 10px;
   border: none;
-  margin-bottom: 12px;
+  font-size: 15px;
 }
 
 button {
@@ -62,8 +74,13 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  opacity: 0.9;
+}
+
 .error {
   color: #ff6b6b;
+  margin-bottom: 10px;
 }
 
 .logout {
@@ -71,4 +88,10 @@ button {
   margin-top: 12px;
   color: #ccc;
   text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 14px;
+  }
 }
