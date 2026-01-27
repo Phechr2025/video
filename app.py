@@ -1,52 +1,46 @@
+
 from flask import Flask, render_template, request, redirect, session
-import os, re
+from config import ADMIN_PASSWORD
+import re
 
 app = Flask(__name__)
-app.secret_key = "CHANGE_THIS_SECRET_KEY"
+app.secret_key = "secret_key"
 
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "1234")
-VIDEO_FILE = "video.txt"
+video_link = None
 
-def extract_video_id(url):
-    match = re.search(r"/d/([^/]+)", url)
-    return match.group(1) if match else None
+def drive_to_direct(url):
+    match = re.search(r"/d/([a-zA-Z0-9_-]+)", url)
+    if match:
+        file_id = match.group(1)
+        return f"https://drive.google.com/uc?export=download&id={file_id}"
+    return None
 
-@app.route("/")
-def index():
-    try:
-        with open(VIDEO_FILE, "r") as f:
-            video_id = f.read().strip()
-    except:
-        video_id = ""
-    return render_template("index.html", video_id=video_id)
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('player.html', video=video_link)
 
-@app.route("/admin", methods=["GET", "POST"])
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['password'] == ADMIN_PASSWORD:
+            session['admin'] = True
+            return redirect('/admin')
+    return render_template('login.html')
+
+@app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    if request.method == "POST":
-        # login
-        if "password" in request.form:
-            if request.form["password"] == ADMIN_PASSWORD:
-                session["admin"] = True
-            else:
-                return render_template("admin.html", error="รหัสผ่านไม่ถูกต้อง")
+    global video_link
+    if not session.get('admin'):
+        return redirect('/login')
+    if request.method == 'POST':
+        url = request.form['drive']
+        video_link = drive_to_direct(url)
+    return render_template('admin.html', video=video_link)
 
-        # save video
-        elif "video_url" in request.form and session.get("admin"):
-            vid = extract_video_id(request.form["video_url"])
-            if vid:
-                with open(VIDEO_FILE, "w") as f:
-                    f.write(vid)
-            return redirect("/")
-
-    if not session.get("admin"):
-        return render_template("admin.html")
-
-    return render_template("admin.html", logged_in=True)
-
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    session.pop("admin", None)
-    return redirect("/admin")
+    session.clear()
+    return redirect('/')
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+if __name__ == '__main__':
+    app.run(debug=True)
