@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h2>🎬 Video Player</h2>
+{% if video %}
+<video controls width="720">
+<source src="{{ video }}" type="video/mp4">
+</video>
+<br>
+<a href="{{ video }}" download class="btn">⬇ ดาวน์โหลด</a>
+{% else %}
+<p>ยังไม่มีวิดีโอ</p>
+{% endif %}
+</body>
+</html>
