@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Player</title>
+  <title>Video Streaming</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -18,11 +18,19 @@
       allowfullscreen
       allow="autoplay">
     </iframe>
+
+    <!-- บัง UI Google Drive (ปุ่มเปิดหน้าต่างใหม่) -->
+    <div class="block-google-ui"></div>
   </div>
   {% else %}
     <p>ยังไม่มีคลิป</p>
   {% endif %}
 </div>
+
+<script>
+  // ปิดคลิกขวา (กันผู้ใช้ทั่วไป)
+  document.addEventListener("contextmenu", e => e.preventDefault());
+</script>
 
 </body>
 </html>
