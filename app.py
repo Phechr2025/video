@@ -4,7 +4,7 @@ import re
 app = Flask(__name__)
 app.secret_key = "CHANGE_THIS_SECRET"
 
-ADMIN_PASSWORD = "1234"
+ADMIN_PASSWORD = "2026"
 VIDEO_FILE = "video.txt"
 
 def get_video_id(url):
