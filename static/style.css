@@ -1,5 +1,25 @@
-body { background:#111; color:#fff; font-family:sans-serif; text-align:center }
-.card { background:#1e1e1e; padding:20px; width:300px; margin:40px auto; border-radius:12px }
-input, button { width:100%; padding:10px; margin-top:10px }
-button { background:#3b82f6; color:white; border:none; border-radius:8px }
-.btn { display:inline-block; margin-top:15px; color:#3b82f6 }
+body {
+    background: #0f172a;
+    color: white;
+    font-family: system-ui;
+    text-align: center;
+    padding: 40px;
+}
+
+video {
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,.6);
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    background: #38bdf8;
+    cursor: pointer;
+}
