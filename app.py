@@ -1,49 +1,38 @@
-from flask import Flask, render_template, request, redirect, session
-from config import ADMIN_PASSWORD
-import re, os
+from flask import Flask, render_template, send_file, request, abort
+import os
 
 app = Flask(__name__)
-app.secret_key = "change_this_secret"
 
-video_link = None
+VIDEO_PATH = "videos/long.mp4"
 
-def drive_to_direct(url):
-    match = re.search(r"/d/([a-zA-Z0-9_-]+)", url)
-    if match:
-        file_id = match.group(1)
-        return f"https://drive.google.com/uc?export=download&id={file_id}"
-    return None
 
-@app.route('/')
-def home():
-    return render_template('player.html', video=video_link)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        if request.form['password'] == ADMIN_PASSWORD:
-            session['admin'] = True
-            return redirect('/admin')
-    return render_template('login.html')
 
-@app.route('/admin', methods=['GET', 'POST'])
+@app.route("/video")
+def video():
+    if not os.path.exists(VIDEO_PATH):
+        abort(404)
+
+    # ✅ สำคัญมาก: conditional=True สำหรับคลิปยาว
+    return send_file(
+        VIDEO_PATH,
+        mimetype="video/mp4",
+        conditional=True
+    )
+
+
+@app.route("/admin", methods=["GET", "POST"])
 def admin():
-    global video_link
-    if not session.get('admin'):
-        return redirect('/login')
+    if request.method == "POST":
+        if request.form.get("username") == "admin" and request.form.get("password") == "1234":
+            return render_template("admin.html", success=True)
+        return render_template("admin.html", error=True)
 
-    if request.method == 'POST':
-        url = request.form['drive']
-        video_link = drive_to_direct(url)
+    return render_template("admin.html")
 
-    return render_template('admin.html', video=video_link)
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/')
-
-# 🔥 จุดสำคัญที่สุดสำหรับ Render
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
